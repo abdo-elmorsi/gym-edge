@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import Slider from 'react-slick';
 import { Icon } from '@iconify/react';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
@@ -12,41 +13,37 @@ import { useTheme } from '@material-ui/core/styles';
 import { Box, Card, Button, Container, Typography, IconButton } from '@material-ui/core';
 // utils
 import mockData from '../../../utils/mock-data';
+import httpRequest from '../../../utils/httpRequest';
 //
 import { varFadeIn, varFadeInUp, MotionInView, varFadeInDown } from '../../animate';
 import { CarouselControlsArrowsBasic2 } from '../../carousel';
 
 // ----------------------------------------------------------------------
 
-const MOCK_MEMBERS = [...Array(5)].map((_, index) => ({
-  id: mockData.id(index),
-  name: mockData.name.fullName(index),
-  role: mockData.role(index),
-  avatar: mockData.image.avatar(index)
-}));
-
-// ----------------------------------------------------------------------
-
 MemberCard.propTypes = {
   member: PropTypes.shape({
     id: PropTypes.string,
-    avatar: PropTypes.string,
+    image: PropTypes.string,
     name: PropTypes.string,
     role: PropTypes.string
   })
 };
 
 function MemberCard({ member }) {
-  const { name, role, avatar } = member;
+  const { name, image } = member;
   return (
     <Card key={name} sx={{ p: 1, mx: 1.5 }}>
       <Typography variant="subtitle1" sx={{ mt: 2, mb: 0.5 }}>
         {name}
       </Typography>
       <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
-        {role}
+        Trainer
       </Typography>
-      <Box component="img" src={avatar} sx={{ width: '100%', borderRadius: 1.5 }} />
+      <Box
+        component="img"
+        src={`http://localhost:3001/img/trainers/${image}`}
+        sx={{ width: '100%', borderRadius: 1.5 }}
+      />
       <Box sx={{ mt: 2, mb: 1 }}>
         {[facebookFill, instagramFilled, linkedinFill, twitterFill].map((social, index) => (
           <IconButton key={index}>
@@ -83,13 +80,28 @@ export default function AboutTeam() {
     ]
   };
 
-  const handlePrevious = () => {
-    carouselRef.current.slickPrev();
-  };
+  const handlePrevious = () => carouselRef.current.slickPrev();
 
-  const handleNext = () => {
-    carouselRef.current.slickNext();
+  const handleNext = () => carouselRef.current.slickNext();
+
+  const [trainers, setTrainers] = useState({});
+  const [loading, setLoading] = useState(true);
+  const getSubscription = async () => {
+    try {
+      const { data } = await httpRequest({
+        method: 'GET',
+        url: `trainers`
+      });
+      setTrainers(data.trainers);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
+  useEffect(() => {
+    getSubscription();
+  }, []);
 
   return (
     <Container maxWidth="lg" sx={{ pb: 10, textAlign: 'center' }}>
@@ -120,11 +132,15 @@ export default function AboutTeam() {
 
       <Box sx={{ position: 'relative' }}>
         <Slider ref={carouselRef} {...settings}>
-          {MOCK_MEMBERS.map((member) => (
-            <MotionInView key={member.id} variants={varFadeIn}>
-              <MemberCard member={member} />
-            </MotionInView>
-          ))}
+          {loading ? (
+            <div>loading</div>
+          ) : (
+            trainers?.map((member) => (
+              <MotionInView key={member._id} variants={varFadeIn}>
+                <MemberCard member={member} />
+              </MotionInView>
+            ))
+          )}
         </Slider>
         <CarouselControlsArrowsBasic2
           onNext={handleNext}

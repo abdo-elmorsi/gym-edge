@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { toast } from 'react-toastify';
 import { Icon } from '@iconify/react';
@@ -28,6 +28,7 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 
 export default function LoginForm() {
   const { login } = useAuth();
+  const navigate = useNavigate();
   const isMountedRef = useIsMountedRef();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -50,6 +51,7 @@ export default function LoginForm() {
         if (isMountedRef.current) {
           setSubmitting(false);
         }
+        navigate('/');
       } catch (error) {
         toast.error(error.message);
         resetForm();

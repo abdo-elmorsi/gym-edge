@@ -5,8 +5,6 @@ import Page from '../components/Page';
 import {
   LandingHero,
   LandingMinimal,
-  LandingDarkMode,
-  LandingThemeColor,
   LandingPricingPlans,
   LandingAdvertisement,
   LandingCleanInterfaces,
@@ -15,17 +13,13 @@ import {
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled(Page)({
-  height: '100%'
-});
+const RootStyle = styled(Page)({ height: '100%' });
 
 const ContentStyle = styled('div')(({ theme }) => ({
   overflow: 'hidden',
   position: 'relative',
   backgroundColor: theme.palette.background.default
 }));
-
-// ----------------------------------------------------------------------
 
 export default function LandingPage() {
   return (
@@ -34,8 +28,6 @@ export default function LandingPage() {
       <ContentStyle>
         <LandingMinimal />
         <LandingHugePackElements />
-        <LandingDarkMode />
-        <LandingThemeColor />
         <LandingCleanInterfaces />
         <LandingPricingPlans />
         <LandingAdvertisement />

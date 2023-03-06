@@ -173,9 +173,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
               <br /> Please check our docs
             </Typography>
           </div>
-          <Button href={PATH_DOCS} target="_blank" variant="contained">
-            Documentation
-          </Button>
         </Stack>
       )}
     </Scrollbar>

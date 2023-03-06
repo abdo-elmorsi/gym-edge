@@ -7,7 +7,7 @@ import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // guards
 import GuestGuard from '../guards/GuestGuard';
 import AuthGuard from '../guards/AuthGuard';
-// import RoleBasedGuard from '../guards/RoleBasedGuard';
+import RoleBasedGuard from '../guards/RoleBasedGuard';
 // components
 import LoadingScreen from '../components/LoadingScreen';
 
@@ -83,21 +83,33 @@ export default function Router() {
           children: [
             { path: '', element: <Navigate to="/dashboard/user/profile" replace /> },
             { path: 'profile', element: <UserProfile /> },
-            { path: 'list', element: <UserList /> },
-            { path: 'new', element: <UserCreate /> },
-            { path: ':name/edit', element: <UserCreate /> },
+            {
+              path: 'list',
+              element: (
+                <RoleBasedGuard>
+                  <UserList />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: 'new',
+              element: (
+                <RoleBasedGuard>
+                  <UserCreate />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: ':name/edit',
+              element: (
+                <RoleBasedGuard>
+                  <UserCreate />
+                </RoleBasedGuard>
+              )
+            },
             { path: 'account', element: <UserAccount /> }
           ]
-        },
-        {
-          path: 'chat',
-          children: [
-            { path: '', element: <Chat /> },
-            { path: 'new', element: <Chat /> },
-            { path: ':conversationKey', element: <Chat /> }
-          ]
-        },
-        { path: 'kanban', element: <Kanban /> }
+        }
       ]
     },
 
@@ -120,7 +132,8 @@ export default function Router() {
         { path: '', element: <LandingPage /> },
         { path: 'about-us', element: <About /> },
         { path: 'contact-us', element: <Contact /> },
-        { path: 'faqs', element: <Faqs /> }
+        { path: 'faqs', element: <Faqs /> },
+        { path: 'subscribe/:id', element: <Subscribe /> }
       ]
     },
     { path: '*', element: <Navigate to="/404" replace /> }
@@ -140,8 +153,6 @@ const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')
 const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
-const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
-const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
 // Main
 const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
 const About = Loadable(lazy(() => import('../pages/About')));
@@ -151,3 +162,4 @@ const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
 const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
+const Subscribe = Loadable(lazy(() => import('../pages/Subscribe')));

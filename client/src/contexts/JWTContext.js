@@ -116,12 +116,14 @@ function AuthProvider({ children }) {
     const { token, user } = response.data;
 
     setSession(token, user);
+    // if (user.role === 'admin') {
     dispatch({
       type: 'LOGIN',
       payload: {
         user
       }
     });
+    // }
   };
 
   const register = async (formData) => {

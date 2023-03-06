@@ -1,7 +1,6 @@
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // components
-import Label from '../../components/Label';
 import SvgIconStyle from '../../components/SvgIconStyle';
 
 // ----------------------------------------------------------------------
@@ -12,10 +11,8 @@ const getIcon = (name) => (
 
 const ICONS = {
   cart: getIcon('ic_cart'),
-  chat: getIcon('ic_chat'),
   mail: getIcon('ic_mail'),
   user: getIcon('ic_user'),
-  kanban: getIcon('ic_kanban'),
   dashboard: getIcon('ic_dashboard')
 };
 
@@ -49,20 +46,6 @@ const sidebarConfig = [
           { title: 'create', path: PATH_DASHBOARD.user.newUser },
           { title: 'edit', path: PATH_DASHBOARD.user.editById }
         ]
-      }
-    ]
-  },
-
-  // APP
-  // ----------------------------------------------------------------------
-  {
-    subheader: 'app',
-    items: [
-      { title: 'chat', path: PATH_DASHBOARD.chat.root, icon: ICONS.chat },
-      {
-        title: 'kanban',
-        path: PATH_DASHBOARD.kanban,
-        icon: ICONS.kanban
       }
     ]
   }

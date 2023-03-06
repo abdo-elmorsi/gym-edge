@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import { Container, Alert, AlertTitle } from '@material-ui/core';
+import useAuth from '../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
 RoleBasedGuard.propTypes = {
-  accessibleRoles: PropTypes.array, // Example ['admin', 'leader']
   children: PropTypes.node
 };
 
@@ -14,10 +14,11 @@ const useCurrentRole = () => {
   return role;
 };
 
-export default function RoleBasedGuard({ accessibleRoles, children }) {
+export default function RoleBasedGuard({ children }) {
   const currentRole = useCurrentRole();
+  const { user } = useAuth();
 
-  if (!accessibleRoles.includes(currentRole)) {
+  if (user.role !== currentRole) {
     return (
       <Container>
         <Alert severity="error">

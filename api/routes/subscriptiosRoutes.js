@@ -1,7 +1,7 @@
-const express= require('express')
-const router= express.Router({mergeParams: true})
-const supscriptionController= require('./../controller/userSubscription')
+const express = require('express')
+const router = express.Router({ mergeParams: true })
+const supscriptionController = require('./../controller/userSubscription')
 
 router.route('/').post(supscriptionController.createSupscription).get(supscriptionController.getAllSubscription)
-
-module.exports= router
+router.route('/:id').get(supscriptionController.getSubscription)
+module.exports = router

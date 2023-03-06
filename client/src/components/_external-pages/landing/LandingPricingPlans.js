@@ -1,12 +1,16 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import checkmarkFill from '@iconify/icons-eva/checkmark-fill';
-import chevronRightFill from '@iconify/icons-eva/chevron-right-fill';
 // material
 import { useTheme, styled, alpha } from '@material-ui/core/styles';
 import { Box, Grid, Card, Link, Stack, Button, Divider, Container, Typography } from '@material-ui/core';
 //
 import { varFadeIn, varFadeInUp, MotionInView, varFadeInDown } from '../../animate';
+import httpRequest from '../../../utils/httpRequest';
+import useAuth from '../../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +18,6 @@ const LICENSES = ['Standard', 'Standard Plus', 'Extended'];
 
 const PLANS = [...Array(3)].map((_, index) => ({
   license: LICENSES[index],
-  commons: ['6 invitations', 'spa sessions'],
   options: ['JavaScript version', 'TypeScript version', 'Design Resources']
 }));
 
@@ -28,20 +31,29 @@ const RootStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 PlanCard.propTypes = {
+  offer: PropTypes.object,
   cardIndex: PropTypes.number,
   plan: PropTypes.shape({
     license: PropTypes.any,
-    commons: PropTypes.arrayOf(PropTypes.string),
     options: PropTypes.arrayOf(PropTypes.string)
   })
 };
 
-function PlanCard({ plan, cardIndex }) {
+function PlanCard({ offer, plan, cardIndex }) {
+  const navigate = useNavigate();
   const theme = useTheme();
-  const { license, commons, options } = plan;
-
+  const { user, isAuthenticated } = useAuth();
+  const { license } = plan;
   const isLight = theme.palette.mode === 'light';
 
+  const handleSub = (id) => {
+    console.log(id);
+    if (isAuthenticated) {
+      navigate(`/subscribe/${id}`);
+    } else {
+      navigate('/auth/login');
+    }
+  };
   return (
     <Card
       sx={{
@@ -62,54 +74,23 @@ function PlanCard({ plan, cardIndex }) {
           <Typography variant="h4">{license}</Typography>
         </div>
         <Stack spacing={2.5}>
-          {commons.map((option) => (
-            <Stack key={option} spacing={1.5} direction="row" alignItems="center">
-              <Box component={Icon} icon={checkmarkFill} sx={{ color: 'primary.main', width: 20, height: 20 }} />
-              <Typography variant="body2">{option}</Typography>
-            </Stack>
-          ))}
-
-          <Divider sx={{ borderStyle: 'dashed' }} />
-
-          {options.map((option, optionIndex) => {
-            const disabledLine =
-              (cardIndex === 0 && optionIndex === 1) ||
-              (cardIndex === 0 && optionIndex === 2) ||
-              (cardIndex === 0 && optionIndex === 3) ||
-              (cardIndex === 1 && optionIndex === 3);
-
-            return (
-              <Stack
-                spacing={1.5}
-                direction="row"
-                alignItems="center"
-                sx={{
-                  ...(disabledLine && { color: 'text.disabled' })
-                }}
-                key={option}
-              >
-                <Box
-                  component={Icon}
-                  icon={checkmarkFill}
-                  sx={{
-                    width: 20,
-                    height: 20,
-                    color: 'primary.main',
-                    ...(disabledLine && { color: 'text.disabled' })
-                  }}
-                />
-                <Typography variant="body2">{option}</Typography>
-              </Stack>
-            );
-          })}
+          <Stack spacing={1.5} direction="row" alignItems="center">
+            <Box component={Icon} icon={checkmarkFill} sx={{ color: 'primary.main', width: 20, height: 20 }} />
+            <Typography variant="body2">{`Price ${offer?.price}$`}</Typography>
+          </Stack>
+        </Stack>
+        <Stack spacing={2.5}>
+          <Stack spacing={1.5} direction="row" alignItems="center">
+            <Box component={Icon} icon={checkmarkFill} sx={{ color: 'primary.main', width: 20, height: 20 }} />
+            <Typography variant="body2">{`${offer?.duration} months`}</Typography>
+          </Stack>
         </Stack>
 
         <Button
+          onClick={() => handleSub(offer?._id)}
           size="large"
           fullWidth
           variant={cardIndex === 1 ? 'contained' : 'outlined'}
-          target="_blank"
-          href="https://material-ui.com/store/items/minimal-dashboard/"
         >
           Choose Plan
         </Button>
@@ -119,6 +100,26 @@ function PlanCard({ plan, cardIndex }) {
 }
 
 export default function LandingPricingPlans() {
+  const [loading, setLoading] = useState(true);
+  const [offers, setOffers] = useState([]);
+
+  const getSubs = async () => {
+    try {
+      const response = await httpRequest({
+        method: 'GET',
+        url: 'offers'
+      });
+      const { data } = response.data;
+      setOffers(data.offers);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    getSubs();
+  }, []);
   return (
     <RootStyle>
       <Container maxWidth="lg">
@@ -144,15 +145,19 @@ export default function LandingPricingPlans() {
           </MotionInView>
         </Box>
 
-        <Grid container spacing={5}>
-          {PLANS.map((plan, index) => (
-            <Grid key={plan.license} item xs={12} md={4}>
-              <MotionInView variants={index === 1 ? varFadeInDown : varFadeInUp}>
-                <PlanCard plan={plan} cardIndex={index} />
-              </MotionInView>
-            </Grid>
-          ))}
-        </Grid>
+        {loading ? (
+          <span>loading</span>
+        ) : (
+          <Grid container spacing={5}>
+            {PLANS.map((plan, index) => (
+              <Grid key={plan.license} item xs={12} md={4}>
+                <MotionInView variants={index === 1 ? varFadeInDown : varFadeInUp}>
+                  <PlanCard offer={offers[index] || {}} plan={plan} cardIndex={index} />
+                </MotionInView>
+              </Grid>
+            ))}
+          </Grid>
+        )}
 
         <MotionInView variants={varFadeIn}>
           <Box sx={{ p: 5, mt: 10, textAlign: 'center' }}>

@@ -1,4 +1,4 @@
-import { NavLink as RouterLink, useLocation } from 'react-router-dom';
+import { NavLink as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import Settings from '@iconify/icons-eva/settings-2-fill';
 // material
@@ -51,8 +51,10 @@ const ToolbarShadowStyle = styled('div')(({ theme }) => ({
 export default function MainNavbar() {
   const isOffset = useOffSetTop(100);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
   const isHome = pathname === '/';
-  const user = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
 
   return (
     <AppBar sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
@@ -85,29 +87,17 @@ export default function MainNavbar() {
             <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
           </MHidden>
 
-          {user?.isAuthenticated ? (
+          {isAuthenticated ? (
             <>
-              {user.user?.role === 'admin' ? (
-                <Button
-                  size="small"
-                  variant="contained"
-                  component={RouterLink}
-                  to={PATH_DASHBOARD.root}
-                  startIcon={<Icon icon={Settings} width={15} height={15} />}
-                >
-                  Dashboard
-                </Button>
-              ) : (
-                <Button
-                  size="small"
-                  variant="contained"
-                  component={RouterLink}
-                  to={PATH_DASHBOARD.root}
-                  startIcon={<Icon icon={Settings} width={15} height={15} />}
-                >
-                  Dashboard
-                </Button>
-              )}
+              <Button
+                size="small"
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.root}
+                startIcon={<Icon icon={Settings} width={15} height={15} />}
+              >
+                Dashboard
+              </Button>
             </>
           ) : (
             <Button
