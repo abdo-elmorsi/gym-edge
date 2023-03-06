@@ -109,6 +109,7 @@
     "simplebar": "^5.3.5",
     "simplebar-react": "^2.3.5",
     "slick-carousel": "^1.8.1",
+    "styled-components": "^5.3.8",
     "stylis": "^4.0.10",
     "stylis-plugin-rtl": "^2.1.0",
     "uuid": "^8.3.2",
