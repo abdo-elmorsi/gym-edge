@@ -1,11 +1,11 @@
 // ----------------------------------------------------------------------
 
 export default function Container() {
-  return {
-    MuiContainer: {
-      styleOverrides: {
-        root: {}
-      }
-    }
-  };
+    return {
+        MuiContainer: {
+            styleOverrides: {
+                root: {}
+            }
+        }
+    };
 }

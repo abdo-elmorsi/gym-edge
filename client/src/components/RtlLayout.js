@@ -1,32 +1,32 @@
-import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import PropTypes from "prop-types";
+import { useEffect } from "react";
 // rtl
-import rtlPlugin from 'stylis-plugin-rtl';
+import rtlPlugin from "stylis-plugin-rtl";
 // emotion
-import createCache from '@emotion/cache';
-import { CacheProvider } from '@emotion/react';
+import createCache from "@emotion/cache";
+import { CacheProvider } from "@emotion/react";
 // material
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from "@material-ui/core/styles";
 
 // ----------------------------------------------------------------------
 
 RtlLayout.propTypes = {
-  children: PropTypes.node
+    children: PropTypes.node
 };
 
 export default function RtlLayout({ children }) {
-  const theme = useTheme();
+    const theme = useTheme();
 
-  useEffect(() => {
-    document.dir = theme.direction;
-  }, [theme.direction]);
+    useEffect(() => {
+        document.dir = theme.direction;
+    }, [theme.direction]);
 
-  const cacheRtl = createCache({
-    key: theme.direction === 'rtl' ? 'rtl' : 'css',
-    stylisPlugins: theme.direction === 'rtl' ? [rtlPlugin] : []
-  });
+    const cacheRtl = createCache({
+        key: theme.direction === "rtl" ? "rtl" : "css",
+        stylisPlugins: theme.direction === "rtl" ? [rtlPlugin] : []
+    });
 
-  cacheRtl.compat = true;
+    cacheRtl.compat = true;
 
-  return <CacheProvider value={cacheRtl}>{children}</CacheProvider>;
+    return <CacheProvider value={cacheRtl}>{children}</CacheProvider>;
 }

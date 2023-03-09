@@ -1,21 +1,27 @@
-import PropTypes from 'prop-types';
-import { motion } from 'framer-motion';
+import PropTypes from "prop-types";
+import { motion } from "framer-motion";
 // material
-import { Box } from '@material-ui/core';
+import { Box } from "@material-ui/core";
 //
-import { varWrapEnter } from './variants';
+import { varWrapEnter } from "./variants";
 
 // ----------------------------------------------------------------------
 
 MotionContainer.propTypes = {
-  open: PropTypes.bool.isRequired,
-  children: PropTypes.node
+    open: PropTypes.bool.isRequired,
+    children: PropTypes.node
 };
 
 export default function MotionContainer({ open, children, ...other }) {
-  return (
-    <Box component={motion.div} initial={false} animate={open ? 'animate' : 'exit'} variants={varWrapEnter} {...other}>
-      {children}
-    </Box>
-  );
+    return (
+        <Box
+            component={motion.div}
+            initial={false}
+            animate={open ? "animate" : "exit"}
+            variants={varWrapEnter}
+            {...other}
+        >
+            {children}
+        </Box>
+    );
 }

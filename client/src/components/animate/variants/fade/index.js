@@ -1,2 +1,2 @@
-export * from './FadeIn';
-export * from './FadeOut';
+export * from "./FadeIn";
+export * from "./FadeOut";

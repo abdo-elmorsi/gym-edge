@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------
 
 export default function Grid() {
-  return {
-    MuiGrid: {
-      styleOverrides: {}
-    }
-  };
+    return {
+        MuiGrid: {
+            styleOverrides: {}
+        }
+    };
 }

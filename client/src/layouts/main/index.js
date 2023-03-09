@@ -1,50 +1,54 @@
-import { Link as ScrollLink } from 'react-scroll';
-import { useLocation, Outlet } from 'react-router-dom';
+import { Link as ScrollLink } from "react-scroll";
+import { useLocation, Outlet } from "react-router-dom";
 // material
-import { Box, Link, Container, Typography } from '@material-ui/core';
+import { Box, Link, Container, Typography } from "@material-ui/core";
 // components
-import Logo from '../../components/Logo';
+import Logo from "../../components/Logo";
 //
-import MainNavbar from './MainNavbar';
-import MainFooter from './MainFooter';
+import MainNavbar from "./MainNavbar";
+import MainFooter from "./MainFooter";
 
 // ----------------------------------------------------------------------
 
 export default function MainLayout() {
-  const { pathname } = useLocation();
-  const isHome = pathname === '/';
+    const { pathname } = useLocation();
+    const isHome = pathname === "/";
 
-  return (
-    <>
-      <MainNavbar />
-      <div>
-        <Outlet />
-      </div>
+    return (
+        <>
+            <MainNavbar />
+            <div>
+                <Outlet />
+            </div>
 
-      {!isHome ? (
-        <MainFooter />
-      ) : (
-        <Box
-          sx={{
-            py: 5,
-            textAlign: 'center',
-            position: 'relative',
-            bgcolor: 'background.default'
-          }}
-        >
-          <Container maxWidth="lg">
-            <ScrollLink to="move_top" spy smooth>
-              <Logo sx={{ mb: 1, mx: 'auto', cursor: 'pointer' }} />
-            </ScrollLink>
+            {!isHome ? (
+                <MainFooter />
+            ) : (
+                <Box
+                    sx={{
+                        py: 5,
+                        textAlign: "center",
+                        position: "relative",
+                        bgcolor: "background.default"
+                    }}
+                >
+                    <Container maxWidth="lg">
+                        <ScrollLink to="move_top" spy smooth>
+                            <Logo
+                                sx={{ mb: 1, mx: "auto", cursor: "pointer" }}
+                            />
+                        </ScrollLink>
 
-            <Typography variant="caption" component="p">
-              © All rights reserved
-              <br /> made by &nbsp;
-              <Link href="https://elmorsy.vercel.app/">Abdo Elmorsy</Link>
-            </Typography>
-          </Container>
-        </Box>
-      )}
-    </>
-  );
+                        <Typography variant="caption" component="p">
+                            © All rights reserved
+                            <br /> made by &nbsp;
+                            <Link href="https://elmorsy.vercel.app/">
+                                Abdo Elmorsy
+                            </Link>
+                        </Typography>
+                    </Container>
+                </Box>
+            )}
+        </>
+    );
 }

@@ -1,11 +1,11 @@
 // ----------------------------------------------------------------------
 
 export default function Snackbar() {
-  return {
-    MuiSnackbarContent: {
-      styleOverrides: {
-        root: {}
-      }
-    }
-  };
+    return {
+        MuiSnackbarContent: {
+            styleOverrides: {
+                root: {}
+            }
+        }
+    };
 }

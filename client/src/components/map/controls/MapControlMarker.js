@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
-import { Marker } from 'react-map-gl';
+import PropTypes from "prop-types";
+import { Marker } from "react-map-gl";
 // material
-import { styled } from '@material-ui/core/styles';
+import { styled } from "@material-ui/core/styles";
 
 // ----------------------------------------------------------------------
 
@@ -10,26 +10,26 @@ const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,
   C20.1,15.8,20.2,15.8,20.2,15.7z`;
 const SIZE = 20;
 
-const IconStyle = styled('svg')(({ theme }) => ({
-  height: SIZE,
-  stroke: 'none',
-  cursor: 'pointer',
-  fill: theme.palette.error.main,
-  transform: `translate(${-SIZE / 2}px,${-SIZE}px)`
+const IconStyle = styled("svg")(({ theme }) => ({
+    height: SIZE,
+    stroke: "none",
+    cursor: "pointer",
+    fill: theme.palette.error.main,
+    transform: `translate(${-SIZE / 2}px,${-SIZE}px)`
 }));
 
 // ----------------------------------------------------------------------
 
 MapControlMarker.propTypes = {
-  onClick: PropTypes.func
+    onClick: PropTypes.func
 };
 
 export default function MapControlMarker({ onClick, ...other }) {
-  return (
-    <Marker {...other}>
-      <IconStyle viewBox="0 0 24 24" onClick={onClick}>
-        <path d={ICON} />
-      </IconStyle>
-    </Marker>
-  );
+    return (
+        <Marker {...other}>
+            <IconStyle viewBox="0 0 24 24" onClick={onClick}>
+                <path d={ICON} />
+            </IconStyle>
+        </Marker>
+    );
 }

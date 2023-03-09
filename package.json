@@ -1,0 +1,25 @@
+{
+    "name": "gym-edge",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "client": "cd client && npm start",
+        "server": "cd api && npm start",
+        "dev": "concurrently \"npm run server\" \"npm run client\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Abdo2711-coder/gym-edge.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Abdo2711-coder/gym-edge/issues"
+    },
+    "homepage": "https://github.com/Abdo2711-coder/gym-edge#readme",
+    "dependencies": {
+        "concurrently": "^7.6.0"
+    }
+}

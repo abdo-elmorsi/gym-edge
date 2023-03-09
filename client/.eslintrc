@@ -29,7 +29,7 @@
     "max-len": 0,
     "no-alert": 0,
     "no-shadow": 0,
-    "no-console": 0,
+    // "no-console": 0,
     "comma-dangle": 0,
     "import/no-cycle": 0,
     "react/prop-types": 1,
@@ -52,23 +52,19 @@
     "react/jsx-props-no-spreading": 0,
     "react/jsx-filename-extension": 0,
     "react/destructuring-assignment": 0,
-    "import/no-extraneous-dependencies": 0,
+    "import/no-extraneous-dependencies": 1,
     "react/jsx-key": 1,
     "react-hooks/rules-of-hooks": 2,
-    "no-unused-vars": [
-      1,
-      {
-        "ignoreRestSiblings": false
-      }
-    ],
-    "prettier/prettier": [
-      2,
-      {
-        "printWidth": 120,
-        "singleQuote": true,
-        "trailingComma": "none",
-        "tabWidth": 2
-      }
+    // "no-unused-vars": [
+    //   1,
+    //   {
+    //     "ignoreRestSiblings": false
+    //   }
+    // ],
+    "prettier/prettier": "warn",
+    "no-unused-vars": "off",
+    "no-console": [
+      "warn",{ "allow":[ "clear", "info", "error", "dir", "trace", "log"]}
     ]
   }
 }

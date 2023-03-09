@@ -1,11 +1,11 @@
 // ----------------------------------------------------------------------
 
 export default function IconButton() {
-  return {
-    MuiIconButton: {
-      styleOverrides: {
-        root: {}
-      }
-    }
-  };
+    return {
+        MuiIconButton: {
+            styleOverrides: {
+                root: {}
+            }
+        }
+    };
 }
