@@ -42,9 +42,18 @@ MemberCard.propTypes = {
 };
 
 function MemberCard({ member }) {
-    const { name, image } = member;
+    const { name, image, _id } = member;
+
+    const handleSub = (id) => {
+        console.log(id);
+    };
     return (
-        <Card key={name} sx={{ p: 1, mx: 1.5 }}>
+        <Card
+            style={{ cursor: "pointer" }}
+            onClick={() => handleSub(_id)}
+            key={name}
+            sx={{ p: 1, mx: 1.5 }}
+        >
             <Typography variant="subtitle1" sx={{ mt: 2, mb: 0.5 }}>
                 {name}
             </Typography>

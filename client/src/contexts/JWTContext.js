@@ -152,7 +152,24 @@ function AuthProvider({ children }) {
 
     const resetPassword = () => {};
 
-    const updateProfile = () => {};
+    const updateProfile = async (formData, id) => {
+        console.log(formData);
+        const response = await httpRequest({
+            method: "PATCH",
+            url: `users/${id}`,
+            data: formData,
+            headers: { "Content-Type": "multipart/form-data" }
+        });
+        // const { token, user } = response.data;
+
+        // window.localStorage.setItem("accessToken", token);
+        // dispatch({
+        //     type: "REGISTER",
+        //     payload: {
+        //         user
+        //     }
+        // });
+    };
 
     return (
         <AuthContext.Provider

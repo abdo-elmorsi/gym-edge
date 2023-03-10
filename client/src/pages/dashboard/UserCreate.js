@@ -10,16 +10,14 @@ import useSettings from "../../hooks/useSettings";
 import Page from "../../components/Page";
 import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs";
 import UserNewForm from "../../components/_dashboard/user/UserNewForm";
-import useAuth from "../../hooks/useAuth";
 
 // ----------------------------------------------------------------------
 
 export default function UserCreate() {
     const { themeStretch } = useSettings();
     const { pathname } = useLocation();
-    const { name } = useParams();
+    const { name, id } = useParams();
     const isEdit = pathname.includes("edit");
-    const user = useAuth();
 
     return (
         <Page title="User: Create a new user | Gym-Edge">
@@ -29,11 +27,17 @@ export default function UserCreate() {
                     links={[
                         { name: "Dashboard", href: PATH_DASHBOARD.root },
                         { name: "User", href: PATH_DASHBOARD.user.root },
-                        { name: !isEdit ? "New user" : name }
+                        {
+                            name: !isEdit
+                                ? "New user"
+                                : name
+                                ? name.slice(1)
+                                : ""
+                        }
                     ]}
                 />
 
-                <UserNewForm isEdit={isEdit} currentUser={user} />
+                <UserNewForm isEdit={isEdit} id={id ? id.slice(1) : ""} />
             </Container>
         </Page>
     );

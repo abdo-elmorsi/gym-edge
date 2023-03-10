@@ -17,7 +17,7 @@ import {
 import useAuth from "../../hooks/useAuth";
 import useCollapseDrawer from "../../hooks/useCollapseDrawer";
 // routes
-import { PATH_DASHBOARD, PATH_DOCS } from "../../routes/paths";
+import { PATH_DASHBOARD, PATH_PAGE } from "../../routes/paths";
 // components
 import Logo from "../../components/Logo";
 import MyAvatar from "../../components/MyAvatar";
@@ -215,8 +215,15 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
                             sx={{ color: "text.secondary" }}
                         >
                             Need help?
-                            <br /> Please check our docs
+                            {/* <br /> Contact us */}
                         </Typography>
+                        <Button
+                            href={PATH_PAGE.contact}
+                            target="_blank"
+                            variant="contained"
+                        >
+                            Contact Us
+                        </Button>
                     </div>
                 </Stack>
             )}

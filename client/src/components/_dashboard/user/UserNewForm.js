@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import PropTypes from "prop-types";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, FormikProvider, useFormik } from "formik";
 import eyeFill from "@iconify/icons-eva/eye-fill";
@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 // utils
 import { fData } from "../../../utils/formatNumber";
+import httpRequest from "../../../utils/httpRequest";
 // routes
 import { PATH_DASHBOARD } from "../../../routes/paths";
 //
@@ -36,13 +37,42 @@ import roles from "./roles";
 
 UserNewForm.propTypes = {
     isEdit: PropTypes.bool,
-    currentUser: PropTypes.object
+    id: PropTypes.string
 };
 
-export default function UserNewForm({ isEdit, currentUser }) {
+export default function UserNewForm({ isEdit, id }) {
     const navigate = useNavigate();
-    const { register } = useAuth();
+    const { register, updateProfile } = useAuth();
+    const [loading, setLoading] = useState(id);
     const [showPassword, setShowPassword] = useState(false);
+
+    const getUser = async () => {
+        try {
+            const { data } = await httpRequest({
+                method: "GET",
+                url: `users/${id}`
+            });
+            let user = data.user || {};
+            setFieldValue("name", "Abdo");
+            setFieldValue("email", user.email);
+            setFieldValue("phoneNumber", user.phone);
+            setFieldValue(
+                "avatarUrl",
+                "http://localhost:3001/img/users/" + user.photo
+            );
+            setFieldValue("role", user.role);
+            // setFieldValue("name", user.name);
+            setLoading(false);
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+    useEffect(() => {
+        if (isEdit && id) {
+            setLoading(true);
+            getUser();
+        }
+    }, [id, isEdit]);
 
     const NewUserSchema = Yup.object().shape({
         name: Yup.string().required("Name is required"),
@@ -55,6 +85,7 @@ export default function UserNewForm({ isEdit, currentUser }) {
             .oneOf([Yup.ref("password")], "Your passwords do not match."),
         avatarUrl: Yup.mixed().required("Avatar is required")
     });
+    let currentUser = {};
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -76,9 +107,14 @@ export default function UserNewForm({ isEdit, currentUser }) {
             bodyFormData.append("role", values.role);
             bodyFormData.append("password", values.password);
             bodyFormData.append("passwordConfirm", values.passwordConfirm);
-            bodyFormData.append("photo", values.file);
+            values.file && bodyFormData.append("photo", values.file);
             try {
-                await register(bodyFormData);
+                if (!isEdit) {
+                    await register(bodyFormData);
+                } else {
+                    bodyFormData.append("id", id);
+                    await updateProfile(bodyFormData, id);
+                }
                 toast.success("register success");
                 resetForm();
                 setSubmitting(false);
@@ -118,10 +154,13 @@ export default function UserNewForm({ isEdit, currentUser }) {
     return (
         <FormikProvider value={formik}>
             <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={4}>
-                        <Card sx={{ py: 10, px: 3 }}>
-                            {isEdit && (
+                {loading ? (
+                    <div>loading</div>
+                ) : (
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={4}>
+                            <Card sx={{ py: 10, px: 3 }}>
+                                {/* {isEdit && (
                                 <Label
                                     color={
                                         values.status !== "active"
@@ -137,42 +176,45 @@ export default function UserNewForm({ isEdit, currentUser }) {
                                 >
                                     {values.status}
                                 </Label>
-                            )}
+                            )} */}
 
-                            <Box sx={{ mb: 5 }}>
-                                <UploadAvatar
-                                    accept="image/*"
-                                    file={values.avatarUrl}
-                                    maxSize={3145728}
-                                    onDrop={handleDrop}
-                                    error={Boolean(
-                                        touched.avatarUrl && errors.avatarUrl
-                                    )}
-                                    caption={
-                                        <Typography
-                                            variant="caption"
-                                            sx={{
-                                                mt: 2,
-                                                mx: "auto",
-                                                display: "block",
-                                                textAlign: "center",
-                                                color: "text.secondary"
-                                            }}
-                                        >
-                                            Allowed *.jpeg, *.jpg, *.png, *.gif
-                                            <br /> max size of {fData(3145728)}
-                                        </Typography>
-                                    }
-                                />
-                                <FormHelperText
-                                    error
-                                    sx={{ px: 2, textAlign: "center" }}
-                                >
-                                    {touched.avatarUrl && errors.avatarUrl}
-                                </FormHelperText>
-                            </Box>
+                                <Box sx={{ mb: 5 }}>
+                                    <UploadAvatar
+                                        accept="image/*"
+                                        file={values.avatarUrl}
+                                        maxSize={3145728}
+                                        onDrop={handleDrop}
+                                        error={Boolean(
+                                            touched.avatarUrl &&
+                                                errors.avatarUrl
+                                        )}
+                                        caption={
+                                            <Typography
+                                                variant="caption"
+                                                sx={{
+                                                    mt: 2,
+                                                    mx: "auto",
+                                                    display: "block",
+                                                    textAlign: "center",
+                                                    color: "text.secondary"
+                                                }}
+                                            >
+                                                Allowed *.jpeg, *.jpg, *.png,
+                                                *.gif
+                                                <br /> max size of{" "}
+                                                {fData(3145728)}
+                                            </Typography>
+                                        }
+                                    />
+                                    <FormHelperText
+                                        error
+                                        sx={{ px: 2, textAlign: "center" }}
+                                    >
+                                        {touched.avatarUrl && errors.avatarUrl}
+                                    </FormHelperText>
+                                </Box>
 
-                            {isEdit && (
+                                {/* {isEdit && (
                                 <FormControlLabel
                                     labelPlacement="start"
                                     control={
@@ -211,174 +253,183 @@ export default function UserNewForm({ isEdit, currentUser }) {
                                         justifyContent: "space-between"
                                     }}
                                 />
-                            )}
-                        </Card>
-                    </Grid>
+                            )} */}
+                            </Card>
+                        </Grid>
 
-                    <Grid item xs={12} md={8}>
-                        <Card sx={{ p: 3 }}>
-                            <Stack spacing={3}>
-                                <Stack
-                                    direction={{ xs: "column", sm: "row" }}
-                                    spacing={{ xs: 3, sm: 2 }}
-                                >
-                                    <TextField
-                                        fullWidth
-                                        label="Full Name"
-                                        {...getFieldProps("name")}
-                                        error={Boolean(
-                                            touched.name && errors.name
-                                        )}
-                                        helperText={touched.name && errors.name}
-                                    />
-                                    <TextField
-                                        fullWidth
-                                        label="Email Address"
-                                        {...getFieldProps("email")}
-                                        error={Boolean(
-                                            touched.email && errors.email
-                                        )}
-                                        helperText={
-                                            touched.email && errors.email
-                                        }
-                                    />
-                                </Stack>
+                        <Grid item xs={12} md={8}>
+                            <Card sx={{ p: 3 }}>
+                                <Stack spacing={3}>
+                                    <Stack
+                                        direction={{ xs: "column", sm: "row" }}
+                                        spacing={{ xs: 3, sm: 2 }}
+                                    >
+                                        <TextField
+                                            fullWidth
+                                            label="Full Name"
+                                            {...getFieldProps("name")}
+                                            error={Boolean(
+                                                touched.name && errors.name
+                                            )}
+                                            helperText={
+                                                touched.name && errors.name
+                                            }
+                                        />
+                                        <TextField
+                                            fullWidth
+                                            label="Email Address"
+                                            {...getFieldProps("email")}
+                                            error={Boolean(
+                                                touched.email && errors.email
+                                            )}
+                                            helperText={
+                                                touched.email && errors.email
+                                            }
+                                        />
+                                    </Stack>
 
-                                <Stack
-                                    direction={{ xs: "column", sm: "row" }}
-                                    spacing={{ xs: 3, sm: 2 }}
-                                >
-                                    <TextField
-                                        fullWidth
-                                        label="Phone Number"
-                                        {...getFieldProps("phoneNumber")}
-                                        error={Boolean(
-                                            touched.phoneNumber &&
+                                    <Stack
+                                        direction={{ xs: "column", sm: "row" }}
+                                        spacing={{ xs: 3, sm: 2 }}
+                                    >
+                                        <TextField
+                                            fullWidth
+                                            label="Phone Number"
+                                            {...getFieldProps("phoneNumber")}
+                                            error={Boolean(
+                                                touched.phoneNumber &&
+                                                    errors.phoneNumber
+                                            )}
+                                            helperText={
+                                                touched.phoneNumber &&
                                                 errors.phoneNumber
+                                            }
+                                        />
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Roles"
+                                            placeholder="Roles"
+                                            {...getFieldProps("role")}
+                                            SelectProps={{ native: true }}
+                                            error={Boolean(
+                                                touched.role && errors.role
+                                            )}
+                                            helperText={
+                                                touched.role && errors.role
+                                            }
+                                        >
+                                            <option value="" />
+                                            {roles.map((option) => (
+                                                <option
+                                                    key={option.value}
+                                                    value={option.value}
+                                                >
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </TextField>
+                                    </Stack>
+
+                                    <TextField
+                                        fullWidth
+                                        autoComplete="current-password"
+                                        type={
+                                            showPassword ? "text" : "password"
+                                        }
+                                        label="Password"
+                                        {...getFieldProps("password")}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        edge="end"
+                                                        onClick={() =>
+                                                            setShowPassword(
+                                                                (prev) => !prev
+                                                            )
+                                                        }
+                                                    >
+                                                        <Icon
+                                                            icon={
+                                                                showPassword
+                                                                    ? eyeFill
+                                                                    : eyeOffFill
+                                                            }
+                                                        />
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                        error={Boolean(
+                                            touched.password && errors.password
                                         )}
                                         helperText={
-                                            touched.phoneNumber &&
-                                            errors.phoneNumber
+                                            touched.password && errors.password
                                         }
                                     />
                                     <TextField
-                                        select
                                         fullWidth
-                                        label="Roles"
-                                        placeholder="Roles"
-                                        {...getFieldProps("role")}
-                                        SelectProps={{ native: true }}
+                                        autoComplete="current-password"
+                                        type={
+                                            showPassword ? "text" : "password"
+                                        }
+                                        label="passwordConfirm"
+                                        {...getFieldProps("passwordConfirm")}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        edge="end"
+                                                        onClick={() =>
+                                                            setShowPassword(
+                                                                (prev) => !prev
+                                                            )
+                                                        }
+                                                    >
+                                                        <Icon
+                                                            icon={
+                                                                showPassword
+                                                                    ? eyeFill
+                                                                    : eyeOffFill
+                                                            }
+                                                        />
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            )
+                                        }}
                                         error={Boolean(
-                                            touched.role && errors.role
+                                            touched.passwordConfirm &&
+                                                errors.passwordConfirm
                                         )}
-                                        helperText={touched.role && errors.role}
-                                    >
-                                        <option value="" />
-                                        {roles.map((option) => (
-                                            <option
-                                                key={option.value}
-                                                value={option.value}
-                                            >
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </TextField>
-                                </Stack>
-
-                                <TextField
-                                    fullWidth
-                                    autoComplete="current-password"
-                                    type={showPassword ? "text" : "password"}
-                                    label="Password"
-                                    {...getFieldProps("password")}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    edge="end"
-                                                    onClick={() =>
-                                                        setShowPassword(
-                                                            (prev) => !prev
-                                                        )
-                                                    }
-                                                >
-                                                    <Icon
-                                                        icon={
-                                                            showPassword
-                                                                ? eyeFill
-                                                                : eyeOffFill
-                                                        }
-                                                    />
-                                                </IconButton>
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                    error={Boolean(
-                                        touched.password && errors.password
-                                    )}
-                                    helperText={
-                                        touched.password && errors.password
-                                    }
-                                />
-                                <TextField
-                                    fullWidth
-                                    autoComplete="current-password"
-                                    type={showPassword ? "text" : "password"}
-                                    label="passwordConfirm"
-                                    {...getFieldProps("passwordConfirm")}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    edge="end"
-                                                    onClick={() =>
-                                                        setShowPassword(
-                                                            (prev) => !prev
-                                                        )
-                                                    }
-                                                >
-                                                    <Icon
-                                                        icon={
-                                                            showPassword
-                                                                ? eyeFill
-                                                                : eyeOffFill
-                                                        }
-                                                    />
-                                                </IconButton>
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                    error={Boolean(
-                                        touched.passwordConfirm &&
+                                        helperText={
+                                            touched.passwordConfirm &&
                                             errors.passwordConfirm
-                                    )}
-                                    helperText={
-                                        touched.passwordConfirm &&
-                                        errors.passwordConfirm
-                                    }
-                                />
+                                        }
+                                    />
 
-                                <Box
-                                    sx={{
-                                        mt: 3,
-                                        display: "flex",
-                                        justifyContent: "flex-end"
-                                    }}
-                                >
-                                    <LoadingButton
-                                        type="submit"
-                                        variant="contained"
-                                        loading={isSubmitting}
+                                    <Box
+                                        sx={{
+                                            mt: 3,
+                                            display: "flex",
+                                            justifyContent: "flex-end"
+                                        }}
                                     >
-                                        {!isEdit
-                                            ? "Create User"
-                                            : "Save Changes"}
-                                    </LoadingButton>
-                                </Box>
-                            </Stack>
-                        </Card>
+                                        <LoadingButton
+                                            type="submit"
+                                            variant="contained"
+                                            loading={isSubmitting}
+                                        >
+                                            {!isEdit
+                                                ? "Create User"
+                                                : "Save Changes"}
+                                        </LoadingButton>
+                                    </Box>
+                                </Stack>
+                            </Card>
+                        </Grid>
                     </Grid>
-                </Grid>
+                )}
             </Form>
         </FormikProvider>
     );

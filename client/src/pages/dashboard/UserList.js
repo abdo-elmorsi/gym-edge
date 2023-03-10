@@ -116,7 +116,8 @@ export default function UserList() {
                             color="primary"
                             variant="contained"
                             endIcon={<EditIcon />}
-                            to={`${PATH_DASHBOARD.user.editById}/:${row._id}`}
+                            component={RouterLink}
+                            to={`${PATH_DASHBOARD.user.editById}/:${row.name}/:${row._id}`}
                         >
                             Edit
                         </Button>
