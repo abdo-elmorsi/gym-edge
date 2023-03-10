@@ -12,14 +12,12 @@ import {
     Card,
     Grid,
     Stack,
-    Switch,
     TextField,
     Typography,
     InputAdornment,
     IconButton,
     Icon,
-    FormHelperText,
-    FormControlLabel
+    FormHelperText
 } from "@material-ui/core";
 import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
@@ -29,9 +27,9 @@ import httpRequest from "../../../utils/httpRequest";
 // routes
 import { PATH_DASHBOARD } from "../../../routes/paths";
 //
-import Label from "../../Label";
 import { UploadAvatar } from "../../upload";
 import roles from "./roles";
+import Label from "../../Label";
 
 // ----------------------------------------------------------------------
 
@@ -44,7 +42,6 @@ export default function UserNewForm({ isEdit, id }) {
     const navigate = useNavigate();
     const { register, updateProfile } = useAuth();
     const [loading, setLoading] = useState(id);
-    const [showPassword, setShowPassword] = useState(false);
 
     const getUser = async () => {
         try {
@@ -53,7 +50,7 @@ export default function UserNewForm({ isEdit, id }) {
                 url: `users/${id}`
             });
             let user = data.user || {};
-            setFieldValue("name", "Abdo");
+            setFieldValue("name", user.name);
             setFieldValue("email", user.email);
             setFieldValue("phoneNumber", user.phone);
             setFieldValue(
@@ -61,7 +58,6 @@ export default function UserNewForm({ isEdit, id }) {
                 "http://localhost:3001/img/users/" + user.photo
             );
             setFieldValue("role", user.role);
-            // setFieldValue("name", user.name);
             setLoading(false);
         } catch (error) {
             toast.error(error.message);
@@ -79,43 +75,34 @@ export default function UserNewForm({ isEdit, id }) {
         email: Yup.string().required("Email is required").email(),
         phoneNumber: Yup.string().required("Phone number is required"),
         role: Yup.string().required("Role is required"),
-        password: Yup.string().required("Password is required"),
-        passwordConfirm: Yup.string()
-            .required("Password is required")
-            .oneOf([Yup.ref("password")], "Your passwords do not match."),
         avatarUrl: Yup.mixed().required("Avatar is required")
     });
-    let currentUser = {};
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            name: currentUser?.name || "",
-            email: currentUser?.email || "",
-            phoneNumber: currentUser?.phoneNumber || "",
-            password: currentUser?.password || "",
-            passwordConfirm: currentUser?.passwordConfirm || "",
-            avatarUrl: currentUser?.avatarUrl || null,
-            role: currentUser?.role || ""
+            name: "",
+            email: "",
+            phoneNumber: "",
+            avatarUrl: null,
+            role: ""
         },
         validationSchema: NewUserSchema,
         onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
+            console.log("abdo");
             const bodyFormData = new FormData();
             bodyFormData.append("name", values.name);
             bodyFormData.append("email", values.email);
             bodyFormData.append("phone", values.phoneNumber);
             bodyFormData.append("role", values.role);
-            bodyFormData.append("password", values.password);
-            bodyFormData.append("passwordConfirm", values.passwordConfirm);
             values.file && bodyFormData.append("photo", values.file);
             try {
                 if (!isEdit) {
                     await register(bodyFormData);
                 } else {
-                    bodyFormData.append("id", id);
                     await updateProfile(bodyFormData, id);
                 }
-                toast.success("register success");
+                toast.success("Update successfully");
                 resetForm();
                 setSubmitting(false);
                 navigate(PATH_DASHBOARD.user.list);
@@ -145,7 +132,6 @@ export default function UserNewForm({ isEdit, id }) {
                     preview: URL.createObjectURL(file)
                 });
                 setFieldValue("file", acceptedFiles[0]);
-                console.log(acceptedFiles[0]);
             }
         },
         [setFieldValue]
@@ -161,22 +147,22 @@ export default function UserNewForm({ isEdit, id }) {
                         <Grid item xs={12} md={4}>
                             <Card sx={{ py: 10, px: 3 }}>
                                 {/* {isEdit && (
-                                <Label
-                                    color={
-                                        values.status !== "active"
-                                            ? "error"
-                                            : "success"
-                                    }
-                                    sx={{
-                                        textTransform: "uppercase",
-                                        position: "absolute",
-                                        top: 24,
-                                        right: 24
-                                    }}
-                                >
-                                    {values.status}
-                                </Label>
-                            )} */}
+                                    <Label
+                                        color={
+                                            values.status !== "active"
+                                                ? "error"
+                                                : "success"
+                                        }
+                                        sx={{
+                                            textTransform: "uppercase",
+                                            position: "absolute",
+                                            top: 24,
+                                            right: 24
+                                        }}
+                                    >
+                                        {values.status}
+                                    </Label>
+                                )} */}
 
                                 <Box sx={{ mb: 5 }}>
                                     <UploadAvatar
@@ -260,153 +246,67 @@ export default function UserNewForm({ isEdit, id }) {
                         <Grid item xs={12} md={8}>
                             <Card sx={{ p: 3 }}>
                                 <Stack spacing={3}>
-                                    <Stack
-                                        direction={{ xs: "column", sm: "row" }}
-                                        spacing={{ xs: 3, sm: 2 }}
-                                    >
-                                        <TextField
-                                            fullWidth
-                                            label="Full Name"
-                                            {...getFieldProps("name")}
-                                            error={Boolean(
-                                                touched.name && errors.name
-                                            )}
-                                            helperText={
-                                                touched.name && errors.name
-                                            }
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            label="Email Address"
-                                            {...getFieldProps("email")}
-                                            error={Boolean(
-                                                touched.email && errors.email
-                                            )}
-                                            helperText={
-                                                touched.email && errors.email
-                                            }
-                                        />
-                                    </Stack>
+                                    <TextField
+                                        fullWidth
+                                        label="Full Name"
+                                        {...getFieldProps("name")}
+                                        error={Boolean(
+                                            touched.name && errors.name
+                                        )}
+                                        helperText={touched.name && errors.name}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        label="Email Address"
+                                        {...getFieldProps("email")}
+                                        error={Boolean(
+                                            touched.email && errors.email
+                                        )}
+                                        helperText={
+                                            touched.email && errors.email
+                                        }
+                                    />
 
-                                    <Stack
-                                        direction={{ xs: "column", sm: "row" }}
-                                        spacing={{ xs: 3, sm: 2 }}
-                                    >
-                                        <TextField
-                                            fullWidth
-                                            label="Phone Number"
-                                            {...getFieldProps("phoneNumber")}
-                                            error={Boolean(
-                                                touched.phoneNumber &&
-                                                    errors.phoneNumber
-                                            )}
-                                            helperText={
-                                                touched.phoneNumber &&
+                                    <TextField
+                                        fullWidth
+                                        label="Phone Number"
+                                        {...getFieldProps("phoneNumber")}
+                                        error={Boolean(
+                                            touched.phoneNumber &&
                                                 errors.phoneNumber
-                                            }
-                                        />
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Roles"
-                                            placeholder="Roles"
-                                            {...getFieldProps("role")}
-                                            SelectProps={{ native: true }}
-                                            error={Boolean(
-                                                touched.role && errors.role
-                                            )}
-                                            helperText={
-                                                touched.role && errors.role
-                                            }
-                                        >
-                                            <option value="" />
-                                            {roles.map((option) => (
-                                                <option
-                                                    key={option.value}
-                                                    value={option.value}
-                                                >
-                                                    {option.label}
-                                                </option>
-                                            ))}
-                                        </TextField>
-                                    </Stack>
+                                        )}
+                                        helperText={
+                                            touched.phoneNumber &&
+                                            errors.phoneNumber
+                                        }
+                                    />
+                                    <TextField
+                                        select
+                                        fullWidth
+                                        label="Roles"
+                                        placeholder="Roles"
+                                        {...getFieldProps("role")}
+                                        SelectProps={{ native: true }}
+                                        error={Boolean(
+                                            touched.role && errors.role
+                                        )}
+                                        helperText={touched.role && errors.role}
+                                    >
+                                        <option value="" />
+                                        {roles.map((option) => (
+                                            <option
+                                                key={option.value}
+                                                value={option.value}
+                                            >
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </TextField>
 
-                                    <TextField
-                                        fullWidth
-                                        autoComplete="current-password"
-                                        type={
-                                            showPassword ? "text" : "password"
-                                        }
-                                        label="Password"
-                                        {...getFieldProps("password")}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        edge="end"
-                                                        onClick={() =>
-                                                            setShowPassword(
-                                                                (prev) => !prev
-                                                            )
-                                                        }
-                                                    >
-                                                        <Icon
-                                                            icon={
-                                                                showPassword
-                                                                    ? eyeFill
-                                                                    : eyeOffFill
-                                                            }
-                                                        />
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                        error={Boolean(
-                                            touched.password && errors.password
-                                        )}
-                                        helperText={
-                                            touched.password && errors.password
-                                        }
-                                    />
-                                    <TextField
-                                        fullWidth
-                                        autoComplete="current-password"
-                                        type={
-                                            showPassword ? "text" : "password"
-                                        }
-                                        label="passwordConfirm"
-                                        {...getFieldProps("passwordConfirm")}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        edge="end"
-                                                        onClick={() =>
-                                                            setShowPassword(
-                                                                (prev) => !prev
-                                                            )
-                                                        }
-                                                    >
-                                                        <Icon
-                                                            icon={
-                                                                showPassword
-                                                                    ? eyeFill
-                                                                    : eyeOffFill
-                                                            }
-                                                        />
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                        error={Boolean(
-                                            touched.passwordConfirm &&
-                                                errors.passwordConfirm
-                                        )}
-                                        helperText={
-                                            touched.passwordConfirm &&
-                                            errors.passwordConfirm
-                                        }
-                                    />
+                                    <Stack
+                                        direction={{ xs: "column", sm: "row" }}
+                                        spacing={{ xs: 3, sm: 2 }}
+                                    ></Stack>
 
                                     <Box
                                         sx={{

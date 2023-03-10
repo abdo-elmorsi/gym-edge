@@ -17,21 +17,17 @@ import httpRequest from "../../utils/httpRequest";
 import { PATH_DASHBOARD } from "../../routes/paths";
 // hooks
 import useSettings from "../../hooks/useSettings";
+import useAuth from "../../hooks/useAuth";
 // components
 import Page from "../../components/Page";
-// import Label from '../../components/Label';
-// import Scrollbar from '../../components/Scrollbar';
-// import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs";
-import { PhotoView } from "react-photo-view";
 import ImageBox from "../../components/ImageBox";
-// import { PhotoProvider, PhotoView } from "react-photo-view";
-// import { UserListHead, UserListToolbar, UserMoreMenu } from '../../components/_dashboard/user/list';
 
 // ----------------------------------------------------------------------
 
 export default function UserList() {
     const { themeStretch } = useSettings();
+    const { user } = useAuth();
     const [loading, setLoading] = useState(true);
     const [update, setUpdate] = useState(true);
     const [tableData, setTableData] = useState([]);
@@ -55,7 +51,7 @@ export default function UserList() {
                 url: "users"
             });
             const { data } = response.data;
-            setTableData(data.users);
+            setTableData(data.users.filter((u) => u._id !== user._id));
         } catch (error) {
             toast.error(error.message);
         } finally {
@@ -78,7 +74,12 @@ export default function UserList() {
             selector: (row) => row.photo,
             cell: (row) => (
                 <>
-                    <ImageBox src={row.photo} user={row.name} />
+                    <ImageBox src={"users/" + row.photo}>
+                        <Avatar
+                            alt={row.name}
+                            src={`http://localhost:3001/img/users/${row.photo}`}
+                        />
+                    </ImageBox>
                 </>
             ),
             sortable: true,
@@ -128,7 +129,6 @@ export default function UserList() {
             width: "250px"
         }
     ];
-
     return (
         <Page title="User: List | Gym-Edge">
             <Container maxWidth={themeStretch ? false : "lg"}>

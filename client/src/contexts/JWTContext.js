@@ -153,7 +153,6 @@ function AuthProvider({ children }) {
     const resetPassword = () => {};
 
     const updateProfile = async (formData, id) => {
-        console.log(formData);
         const response = await httpRequest({
             method: "PATCH",
             url: `users/${id}`,

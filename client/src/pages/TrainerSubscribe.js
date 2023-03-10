@@ -3,8 +3,7 @@ import { styled } from "@material-ui/core/styles";
 import { Grid, Container } from "@material-ui/core";
 // components
 import Page from "../components/Page";
-// import { SubscribeForm } from "../components/_external-pages/subscribe";
-import { SubscribeForm } from "../components/_external-pages/subscribe";
+import { TrainerSubscribeForm } from "../components/_external-pages/subscribe";
 
 // ----------------------------------------------------------------------
 
@@ -17,13 +16,13 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function Subscribe() {
+export default function TrainerSubscribe() {
     return (
-        <RootStyle title="Subscribe us | Gym-Edge">
+        <RootStyle title="Trainer Subscribe us | Gym-Edge">
             <Container sx={{ my: 10 }}>
                 <Grid container spacing={10}>
                     <Grid item xs={12} md={6}>
-                        <SubscribeForm />
+                        <TrainerSubscribeForm />
                     </Grid>
                 </Grid>
             </Container>

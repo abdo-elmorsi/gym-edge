@@ -141,7 +141,12 @@ export default function Router() {
                 { path: "about-us", element: <About /> },
                 { path: "contact-us", element: <Contact /> },
                 { path: "faqs", element: <Faqs /> },
-                { path: "subscribe/:id", element: <Subscribe /> }
+                { path: "subscribe/:id", element: <Subscribe /> },
+                { path: "trainer/:email", element: <Trainer /> },
+                {
+                    path: "subscribe-trainer/:id/:type",
+                    element: <TrainerSubscribe />
+                }
             ]
         },
         { path: "*", element: <Navigate to="/404" replace /> }
@@ -185,3 +190,7 @@ const Maintenance = Loadable(lazy(() => import("../pages/Maintenance")));
 const Page500 = Loadable(lazy(() => import("../pages/Page500")));
 const NotFound = Loadable(lazy(() => import("../pages/Page404")));
 const Subscribe = Loadable(lazy(() => import("../pages/Subscribe")));
+const Trainer = Loadable(lazy(() => import("../pages/Trainer")));
+const TrainerSubscribe = Loadable(
+    lazy(() => import("../pages/TrainerSubscribe"))
+);

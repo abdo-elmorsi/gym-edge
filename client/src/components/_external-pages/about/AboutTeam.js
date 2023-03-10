@@ -29,6 +29,9 @@ import {
     varFadeInDown
 } from "../../animate";
 import { CarouselControlsArrowsBasic2 } from "../../carousel";
+import ImageBox from "../../../components/ImageBox";
+import { PATH_PAGE } from "../../../routes/paths";
+import { useNavigate } from "react-router";
 
 // ----------------------------------------------------------------------
 
@@ -42,15 +45,16 @@ MemberCard.propTypes = {
 };
 
 function MemberCard({ member }) {
-    const { name, image, _id } = member;
+    const navigate = useNavigate();
+    const { name, image, _id, email } = member;
 
-    const handleSub = (id) => {
-        console.log(id);
+    const handleSub = () => {
+        navigate(`/trainer/${email}`);
     };
     return (
         <Card
             style={{ cursor: "pointer" }}
-            onClick={() => handleSub(_id)}
+            onClick={handleSub}
             key={name}
             sx={{ p: 1, mx: 1.5 }}
         >
@@ -60,11 +64,13 @@ function MemberCard({ member }) {
             <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
                 Trainer
             </Typography>
-            <Box
-                component="img"
-                src={`http://localhost:3001/img/trainers/${image}`}
-                sx={{ width: "100%", borderRadius: 1.5 }}
-            />
+            <ImageBox alt="Trainer" src={`trainers/${image}`}>
+                <Box
+                    component="img"
+                    src={`http://localhost:3001/img/trainers/${image}`}
+                    sx={{ width: "100%", borderRadius: 1.5 }}
+                />
+            </ImageBox>
             <Box sx={{ mt: 2, mb: 1 }}>
                 {[facebookFill, instagramFilled, linkedinFill, twitterFill].map(
                     (social, index) => (

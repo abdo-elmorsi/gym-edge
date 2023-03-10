@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import moment from "moment";
-import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
 // material
 import { styled } from "@material-ui/core/styles";
 import { Link, Card, Typography, CardHeader, Stack } from "@material-ui/core";
-import useAuth from "../../../../hooks/useAuth";
-import httpRequest from "../../../../utils/httpRequest";
 
 // ----------------------------------------------------------------------
 
@@ -19,12 +16,12 @@ const IconStyle = styled(Icon)(({ theme }) => ({
 }));
 
 // ----------------------------------------------------------------------
-export default function ProfileSubscribe({ subscribe }) {
+export default function ProfileSubscribeWithTrainer({ subscribe }) {
     return (
         <>
             {Object.keys(subscribe).length ? (
                 <Card>
-                    <CardHeader title="Subscribe" />
+                    <CardHeader title="Trainer Subscribe" />
 
                     <Stack spacing={2} sx={{ p: 3 }}>
                         {/* <Typography variant="body2">{quote}</Typography> */}
@@ -38,7 +35,7 @@ export default function ProfileSubscribe({ subscribe }) {
                                         variant="subtitle2"
                                         color="text.primary"
                                     >
-                                        {subscribe?.offer?.price}$
+                                        {subscribe?.PrivatePackage?.price}$
                                     </Link>
                                 </Typography>
                             </Stack>
@@ -51,7 +48,8 @@ export default function ProfileSubscribe({ subscribe }) {
                                         variant="subtitle2"
                                         color="text.primary"
                                     >
-                                        {subscribe?.offer?.duration} months
+                                        {subscribe?.PrivatePackage?.duration}{" "}
+                                        months
                                     </Link>
                                 </Typography>
                             </Stack>

@@ -10,8 +10,8 @@ import { varFadeInUp, varZoomIn, MotionInView } from "../../animate";
 import { toast } from "react-toastify";
 import { PATH_DASHBOARD } from "../../../routes/paths";
 
-const SubscribeForm = () => {
-    const { id } = useParams();
+const TrainerSubscribeForm = () => {
+    const { id, type } = useParams();
     const { user } = useAuth();
     const navigate = useNavigate();
 
@@ -48,10 +48,11 @@ const SubscribeForm = () => {
         try {
             await httpRequest({
                 method: "POST",
-                url: `subscribe`,
+                url: `privateSubscription`,
                 data: {
-                    user: user._id,
-                    offer: id
+                    PrivatePackage: type,
+                    trainer: id,
+                    trainee: user._id
                 }
             });
             toast.success("subscribe successfully");
@@ -138,4 +139,4 @@ const SubscribeForm = () => {
         </div>
     );
 };
-export default SubscribeForm;
+export default TrainerSubscribeForm;

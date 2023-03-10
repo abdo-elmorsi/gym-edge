@@ -27,7 +27,9 @@ export const PATH_PAGE = {
     faqs: "/faqs",
     page404: "/404",
     page500: "/500",
-    subscribe: "/subscribe/:id"
+    trainer: "/trainer/:email",
+    subscribe: "/subscribe/:id",
+    subscribeTrainer: "/subscribe-trainer/:id/:type"
 };
 
 export const PATH_DASHBOARD = {
