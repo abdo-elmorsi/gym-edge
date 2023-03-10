@@ -1,13 +1,17 @@
 import { Icon } from "@iconify/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import plusFill from "@iconify/icons-eva/plus-fill";
-import { Link as RouterLink } from "react-router-dom";
+import { Link, Link as RouterLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 // material
-import { Card, Button, Container, Avatar } from "@material-ui/core";
-// eslint-disable-next-line import/named
+import { Card, Container, Button, Avatar, Stack } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+
 import httpRequest from "../../utils/httpRequest";
 // routes
 import { PATH_DASHBOARD } from "../../routes/paths";
@@ -19,6 +23,9 @@ import Page from "../../components/Page";
 // import Scrollbar from '../../components/Scrollbar';
 // import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs";
+import { PhotoView } from "react-photo-view";
+import ImageBox from "../../components/ImageBox";
+// import { PhotoProvider, PhotoView } from "react-photo-view";
 // import { UserListHead, UserListToolbar, UserMoreMenu } from '../../components/_dashboard/user/list';
 
 // ----------------------------------------------------------------------
@@ -71,9 +78,7 @@ export default function UserList() {
             selector: (row) => row.photo,
             cell: (row) => (
                 <>
-                    <Avatar
-                        src={`http://localhost:3001/img/users/${row.photo}`}
-                    />
+                    <ImageBox src={row.photo} user={row.name} />
                 </>
             ),
             sortable: true,
@@ -96,17 +101,35 @@ export default function UserList() {
             selector: (row) => row._id,
             cell: (row) => (
                 <>
-                    <button onClick={() => deleteUser(row._id)}>delete</button>
-                    <button>update</button>
+                    <Stack direction="row" spacing={2}>
+                        <Button
+                            onClick={() => deleteUser(row._id)}
+                            size="small"
+                            color="error"
+                            variant="outlined"
+                            startIcon={<DeleteIcon />}
+                        >
+                            Delete
+                        </Button>
+                        <Button
+                            size="small"
+                            color="primary"
+                            variant="contained"
+                            endIcon={<EditIcon />}
+                            to={`${PATH_DASHBOARD.user.editById}/:${row._id}`}
+                        >
+                            Edit
+                        </Button>
+                    </Stack>
                 </>
             ),
-            sortable: true,
-            width: "200px"
+            sortable: false,
+            width: "250px"
         }
     ];
 
     return (
-        <Page title="User: List | Easier">
+        <Page title="User: List | Gym-Edge">
             <Container maxWidth={themeStretch ? false : "lg"}>
                 <HeaderBreadcrumbs
                     heading="User List"
@@ -142,7 +165,7 @@ export default function UserList() {
                             pagination
                             highlightOnHover
                             progressPending={loading}
-                            progressComponent={<div>loading</div>}
+                            progressComponent={<CircularProgress />}
                             paginationRowsPerPageOptions={[
                                 10, 25, 50, 100, 1000
                             ]}

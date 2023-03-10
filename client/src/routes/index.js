@@ -108,7 +108,7 @@ export default function Router() {
                             )
                         },
                         {
-                            path: ":name/edit",
+                            path: "edit/:id",
                             element: (
                                 <RoleBasedGuard>
                                     <UserCreate />

@@ -80,7 +80,7 @@ export default function UserAccount() {
     };
 
     return (
-        <Page title="User: Account Settings | Easier">
+        <Page title="User: Account Settings | Gym-Edge">
             <Container maxWidth={themeStretch ? false : "lg"}>
                 <HeaderBreadcrumbs
                     heading="Account"

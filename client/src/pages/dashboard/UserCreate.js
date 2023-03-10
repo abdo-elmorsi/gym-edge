@@ -22,7 +22,7 @@ export default function UserCreate() {
     const user = useAuth();
 
     return (
-        <Page title="User: Create a new user | Easier">
+        <Page title="User: Create a new user | Gym-Edge">
             <Container maxWidth={themeStretch ? false : "lg"}>
                 <HeaderBreadcrumbs
                     heading={!isEdit ? "Create a new user" : "Edit user"}

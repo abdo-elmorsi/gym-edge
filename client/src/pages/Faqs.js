@@ -23,7 +23,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function Faqs() {
     return (
-        <RootStyle title="Faqs | Easier">
+        <RootStyle title="Faqs | Gym-Edge">
             <FaqsHero />
 
             <Container sx={{ mt: 15, mb: 10 }}>

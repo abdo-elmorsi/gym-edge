@@ -22,7 +22,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function Page404() {
     return (
-        <RootStyle title="404 Page Not Found | Easier">
+        <RootStyle title="404 Page Not Found | Gym-Edge">
             <Container>
                 <MotionContainer initial="initial" open>
                     <Box

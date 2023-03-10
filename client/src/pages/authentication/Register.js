@@ -50,7 +50,7 @@ const ContentStyle = styled("div")(({ theme }) => ({
 
 export default function Register() {
     return (
-        <RootStyle title="Register | Easier">
+        <RootStyle title="Register | Gym-Edge">
             <AuthLayout>
                 Already have an account? &nbsp;
                 <Link

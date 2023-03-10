@@ -18,7 +18,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function Subscribe() {
     return (
-        <RootStyle title="Subscribe us | Easier">
+        <RootStyle title="Subscribe us | Gym-Edge">
             <Container sx={{ my: 10 }}>
                 <Grid container spacing={10}>
                     <Grid item xs={12} md={6}>

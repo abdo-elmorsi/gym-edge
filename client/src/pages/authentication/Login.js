@@ -51,7 +51,7 @@ const ContentStyle = styled("div")(({ theme }) => ({
 
 export default function Login() {
     return (
-        <RootStyle title="Login | Easier">
+        <RootStyle title="Login | Gym-Edge">
             <AuthLayout>
                 Don’t have an account? &nbsp;
                 <Link

@@ -40,7 +40,7 @@ export const PATH_DASHBOARD = {
         profile: path(ROOTS_DASHBOARD, "/user/profile"),
         list: path(ROOTS_DASHBOARD, "/user/list"),
         newUser: path(ROOTS_DASHBOARD, "/user/new"),
-        editById: path(ROOTS_DASHBOARD, `/user/reece-chung/edit`),
+        editById: path(ROOTS_DASHBOARD, `/user/edit/:id`),
         account: path(ROOTS_DASHBOARD, "/user/account")
     }
 };

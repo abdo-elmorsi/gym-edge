@@ -25,7 +25,7 @@ export default function GeneralApp() {
     const { user } = useAuth();
 
     return (
-        <Page title="General: App | Easier">
+        <Page title="General: App | Gym-Edge">
             <Container maxWidth={themeStretch ? false : "xl"}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={8}>

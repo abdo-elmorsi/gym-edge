@@ -20,7 +20,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function Page500() {
     return (
-        <RootStyle title="500 Internal Server Error | Easier">
+        <RootStyle title="500 Internal Server Error | Gym-Edge">
             <Container>
                 <Box
                     sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}

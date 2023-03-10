@@ -59,7 +59,7 @@ export default function UserProfile() {
     ];
 
     return (
-        <Page title="User: Profile | Easier">
+        <Page title="User: Profile | Gym-Edge">
             <Container maxWidth={themeStretch ? false : "lg"}>
                 <HeaderBreadcrumbs
                     heading="Profile"

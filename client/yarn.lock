@@ -11994,6 +11994,11 @@ react-modal@^3.11.1:
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
 
+react-photo-view@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/react-photo-view/-/react-photo-view-1.2.3.tgz#436f81ad0a611dfaa43bbc72a4fef26a057b5aef"
+  integrity sha512-dtaFjU8nAB/rD8mxBaaJcvESlDOweAd1tmvXujS/d3oh1QyGew3xD4C02l46E6Dhn3Tshzl2+IM1h0MWV9nG7g==
+
 react-redux@^7.2.0, react-redux@^7.2.4:
   version "7.2.9"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.2.9.tgz#09488fbb9416a4efe3735b7235055442b042481d"

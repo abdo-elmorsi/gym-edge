@@ -20,7 +20,6 @@ import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 import useIsMountedRef from "../../../hooks/useIsMountedRef";
 
-// eslint-disable-next-line import/no-unresolved, import/extensions
 import { UploadAvatar } from "../../upload";
 
 // ----------------------------------------------------------------------
