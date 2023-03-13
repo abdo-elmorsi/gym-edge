@@ -22,7 +22,7 @@ const IconStyle = styled(Icon)(({ theme }) => ({
 export default function ProfileSubscribe({ subscribe }) {
     return (
         <>
-            {Object.keys(subscribe).length ? (
+            {Object.keys(subscribe)?.length ? (
                 <Card>
                     <CardHeader title="Subscribe" />
 

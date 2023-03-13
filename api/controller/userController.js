@@ -161,3 +161,26 @@ exports.getOne = async (req, res) => {
     });
   }
 };
+
+exports.checkValidation = async (req, res) => {
+  try {
+    const user = await User.findOne({ photo: req.body.photo })
+
+    if (!user) throw new Error('The user is not found')
+
+    const subscription = await Subscription.findOne({ user: user._id })
+    console.log(subscription.endDate)
+    if (subscription.endDate > Date.now()) {
+      return res.status(200).json({ status: 'valid' })
+    } else {
+      return res.status(200).json({ status: 'invalid' })
+    }
+
+
+  } catch (err) {
+    res.status(404).json({
+      status: 'unkonwon',
+      message: err.message
+    })
+  }
+}

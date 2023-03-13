@@ -57,11 +57,11 @@ export default function Profile({ myProfile }) {
                     <Grid item xs={12} md={8}>
                         <Stack spacing={3}>
                             <ProfileSubscribe
-                                subscribe={CurrentUser?.subscribe}
+                                subscribe={CurrentUser?.subscribe || {}}
                             />
                             <Stack spacing={3}>
                                 <ProfileSubscribeWithTrainer
-                                    subscribe={CurrentUser?.private}
+                                    subscribe={CurrentUser?.private || {}}
                                 />
                             </Stack>
                         </Stack>

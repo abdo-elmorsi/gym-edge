@@ -19,7 +19,7 @@ const IconStyle = styled(Icon)(({ theme }) => ({
 export default function ProfileSubscribeWithTrainer({ subscribe }) {
     return (
         <>
-            {Object.keys(subscribe).length ? (
+            {Object.keys(subscribe)?.length ? (
                 <Card>
                     <CardHeader title="Trainer Subscribe" />
 
