@@ -3,10 +3,8 @@ import {
     Box,
     Grid,
     Card,
-    Link,
     Stack,
     Button,
-    Divider,
     Container,
     Typography
 } from "@material-ui/core";
@@ -18,12 +16,7 @@ import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 
-import {
-    varFadeIn,
-    varFadeInUp,
-    MotionInView,
-    varFadeInDown
-} from "../../animate";
+import { varFadeInUp, MotionInView, varFadeInDown } from "../../animate";
 import httpRequest from "../../../utils/httpRequest";
 import ImageBox from "../../../components/ImageBox";
 const RootStyle = styled("div")(({ theme }) => ({
@@ -42,6 +35,7 @@ const PLANS = [...Array(3)].map((_, index) => ({
 
 PlanCard.propTypes = {
     pckg: PropTypes.object,
+    trainerId: PropTypes.number,
     cardIndex: PropTypes.number,
     plan: PropTypes.shape({
         license: PropTypes.any,
@@ -49,16 +43,16 @@ PlanCard.propTypes = {
     })
 };
 
-function PlanCard({ pckg, plan, cardIndex }) {
+function PlanCard({ pckg, trainerId, plan, cardIndex }) {
     const navigate = useNavigate();
     const theme = useTheme();
-    const { user, isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
     const { license } = plan;
     const isLight = theme.palette.mode === "light";
 
-    const handleSub = (id) => {
+    const handleSub = (pkgId) => {
         if (isAuthenticated) {
-            navigate(`/subscribe-trainer/${id}/${pckg?._id}`);
+            navigate(`/subscribe-trainer/${trainerId}/${pkgId}`);
         } else {
             navigate("/auth/login");
         }
@@ -139,8 +133,6 @@ function PlanCard({ pckg, plan, cardIndex }) {
 
 const Trainer = () => {
     const { email } = useParams();
-    const { user } = useAuth();
-    const navigate = useNavigate();
     const [Trainer, setTrainer] = useState({});
     const [packages, setPackages] = useState([]);
 
@@ -263,6 +255,7 @@ const Trainer = () => {
                                     >
                                         <PlanCard
                                             pckg={packages[index] || {}}
+                                            trainerId={Trainer?._id}
                                             plan={plan}
                                             cardIndex={index}
                                         />

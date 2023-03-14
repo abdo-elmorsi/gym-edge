@@ -32,6 +32,8 @@ privateSchema.pre(/^find/, function (next) {
 
 privateSchema.pre('save', async function (next) {
   const package = await PrivatePackage.findById(this.PrivatePackage);
+  console.log(package);
+  // console.log(package._doc);
   const duration = package.duration;
   const date = new Date();
   date.setMonth(this.startDate.getMonth() + duration);

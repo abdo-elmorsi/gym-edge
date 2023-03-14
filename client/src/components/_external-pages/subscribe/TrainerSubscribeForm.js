@@ -52,7 +52,7 @@ const TrainerSubscribeForm = () => {
                 data: {
                     PrivatePackage: type,
                     trainer: id,
-                    trainee: user._id
+                    trainee: user?._id
                 }
             });
             toast.success("subscribe successfully");
