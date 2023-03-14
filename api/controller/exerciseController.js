@@ -5,7 +5,7 @@ const multer= require('multer')
 
 const multerStorage= multer.diskStorage({
     destination: (req, file, cb)=>{
-        cb(null, 'public/img/exercises')
+        cb(null, 'public/video/exercises')
     },
     filename: (req, file, cb)=>{
         const ext= file.mimetype.split('/')[1]
@@ -13,17 +13,17 @@ const multerStorage= multer.diskStorage({
     }
 })
 
-const multerFilter= (req, file, cb)=>{
-if(file.mimetype.startsWith('image')){
-    cb(null, true)
-}else{
-    cb( new Error('Please Upload only image'),false)
-}
-}
+// const multerFilter= (req, file, cb)=>{
+// if(file.mimetype.startsWith('image')){
+//     cb(null, true)
+// }else{
+//     cb( new Error('Please Upload only image'),false)
+// }
+// }
 
 const upload= multer({
-    storage: multerStorage,
-    fileFilter: multerFilter
+    storage: multerStorage
+    // fileFilter: multerFilter
 }) 
 
 exports.uploadExercisePhoto= upload.single('video')

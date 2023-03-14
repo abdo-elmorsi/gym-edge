@@ -27,7 +27,7 @@ const limiter = rateLimiter({
     windowMs: 60 * 60 * 1000,
     message: 'Too Many requests from this IP, please try again in an one hour'
 })
-app.use('/api', limiter)
+// app.use('/api', limiter)
 
 app.use(express.json())
 app.use(express.static(`${__dirname}/public`))
