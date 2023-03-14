@@ -1,6 +1,6 @@
 const fs = require('fs');
 const morgan = require('morgan');
-const rateLimiter = require('express-rate-limit');
+// const rateLimiter = require('express-rate-limit');
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -22,11 +22,11 @@ const checkValidationRouter = require('./routes/checkValidationRoutes');
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
-const limiter = rateLimiter({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: 'Too Many requests from this IP, please try again in an one hour',
-});
+// const limiter = rateLimiter({
+//   max: 100,
+//   windowMs: 60 * 60 * 1000,
+//   message: 'Too Many requests from this IP, please try again in an one hour',
+// });
 // app.use('/api', limiter)
 
 app.use(express.json());

@@ -22,9 +22,7 @@ const privateSchema = new mongoose.Schema({
 });
 
 privateSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'trainer',
-  })
+  this.populate('trainer')
     .populate('trainee')
     .populate('PrivatePackage');
   next();
