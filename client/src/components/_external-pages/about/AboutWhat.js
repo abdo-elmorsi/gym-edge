@@ -88,7 +88,7 @@ export default function AboutWhat() {
                                     <MotionInView variants={varFadeInUp}>
                                         <Box
                                             component="img"
-                                            src="/static/about/what-1.jpg"
+                                            src="/static/about/what-1-1.jpg"
                                             sx={{
                                                 borderRadius: 2,
                                                 boxShadow: shadow
@@ -100,7 +100,7 @@ export default function AboutWhat() {
                                     <MotionInView variants={varFadeInUp}>
                                         <Box
                                             component="img"
-                                            src="/static/about/what-2.jpg"
+                                            src="/static/about/what-2-2.jpg"
                                             sx={{ borderRadius: 2 }}
                                         />
                                     </MotionInView>
@@ -125,14 +125,10 @@ export default function AboutWhat() {
                                             : "common.white"
                                 }}
                             >
-                                Our theme is the most advanced and user-friendly
-                                theme you will find on the market, we have
-                                documentation and video to help set your site
-                                really easily, pre-installed demos you can
-                                import in one click and everything from the
-                                theme options to page content can be edited from
-                                the front-end. This is the theme you are looking
-                                for.
+                                Lorem Ipsum is simply dummy text of the printing
+                                and typesetting industry. Lorem Ipsum has been
+                                the industry's standard dummy text ever since
+                                the 1500s.
                             </Typography>
                         </MotionInView>
 

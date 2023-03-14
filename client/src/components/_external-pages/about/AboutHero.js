@@ -10,7 +10,7 @@ import { varWrapEnter, varFadeInRight, TextAnimate } from "../../animate";
 const RootStyle = styled(motion.div)(({ theme }) => ({
     backgroundSize: "cover",
     backgroundPosition: "center",
-    backgroundImage: "url(/static/overlay.svg), url(/static/about/hero.jpg)",
+    backgroundImage: "url(/static/overlay.svg), url(/static/about/hero-2.jpg)",
     padding: theme.spacing(10, 0),
     [theme.breakpoints.up("md")]: {
         height: 560,
@@ -58,7 +58,7 @@ export default function AboutHero() {
                             }}
                         >
                             Let's work together and
-                            <br /> make awesome site easily
+                            <br /> make awesome fit body
                         </Typography>
                     </motion.div>
                 </ContentStyle>

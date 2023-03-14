@@ -15,22 +15,22 @@ import { varFadeInUp, MotionInView, varFadeInDown } from "../../animate";
 
 const CARDS = [
     {
-        icon: "/static/icons/ic_design.svg",
-        title: "UI & UX Design",
+        icon: "/static/icons/ic_setting.svg",
+        title: "BEGINNER",
         description:
-            "The set is built on the principles of the atomic design system. It helps you to create projects fastest and easily customized packages for your projects."
+            "We cater to all experience levels. Don't be shy and see what you're missing."
     },
     {
-        icon: "/static/icons/ic_code.svg",
-        title: "Development",
+        icon: "/static/icons/ic_setting.svg",
+        title: "EXPERIENCED",
         description:
-            "Easy to customize and extend each component, saving you time and money."
+            "We even have more intense workouts for the personal trainer in you."
     },
     {
-        icon: "/static/brand/logo_single.svg",
-        title: "Branding",
+        icon: "/static/icons/ic_user.svg",
+        title: "ALL AGES",
         description:
-            "Consistent design in colors, fonts ... makes brand recognition easy."
+            "We can train any age level. If you want to have a healthier lifestyle then call us today to find out more."
     }
 ];
 
