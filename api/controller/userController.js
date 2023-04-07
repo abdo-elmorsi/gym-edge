@@ -4,6 +4,8 @@ const multer = require('multer');
 const Subscription = require('./../models/userSupscription');
 const privateSubscription = require('./../models/privateSupscriptionModel');
 const privateClassSubscription = require('./../models/privateClassSupscription');
+const fs = require('fs');
+const path = require('path');
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
   Object.keys(obj).forEach((el) => {
@@ -106,6 +108,15 @@ exports.deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) throw new Error('This user not found with given id');
+    const filePath = path.join(__dirname, `../public/img/users`, `${user.photo}`);
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      console.log('File deleted successfully');
+    });
     if (user)
       res.status(200).json({
         status: 'success',
